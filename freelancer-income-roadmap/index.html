@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workflow & Proyeksi Income Freelancer Digital — Matajaga Research</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,300;400;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0a1628;
+    --gold: #c9a84c;
+    --gold-pale: #fdf6e3;
+    --text: #1a1a2e;
+    --text-muted: #5a5a7a;
+    --text-light: #9090aa;
+    --border: rgba(201,168,76,0.25);
+    --bg-soft: #fafaf8;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Source Serif 4', Georgia, serif; background: var(--bg-soft); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+  .page-header { background: var(--navy); color: #fff; padding: 3rem 2rem 2.5rem; border-bottom: 3px solid var(--gold); }
+  .header-inner { max-width: 900px; margin: 0 auto; }
+  .header-kicker { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .header-title { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(22px, 4vw, 34px); font-weight: 700; line-height: 1.2; color: #fff; margin-bottom: 0.75rem; }
+  .header-subtitle { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.6); max-width: 640px; margin-bottom: 1.5rem; }
+  .header-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.06em; }
+
+  .main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .milestone-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-bottom: 2rem; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .ms { padding: 12px 10px; text-align: center; border-right: 1px solid var(--border); background: #fff; }
+  .ms:last-child { border-right: none; }
+  .ms-period { font-size: 10px; color: var(--text-light); letter-spacing: 0.08em; text-transform: uppercase; }
+  .ms-income { font-size: 15px; font-weight: 500; color: var(--navy); margin: 4px 0; }
+  .ms-tag { font-size: 10px; color: var(--text-muted); }
+  .ms.p1 { border-top: 3px solid #378ADD; }
+  .ms.p2 { border-top: 3px solid #BA7517; }
+  .ms.p3 { border-top: 3px solid #7F77DD; }
+  .ms.p4 { border-top: 3px solid #639922; }
+
+  .phase-block { border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; background: #fff; }
+  .phase-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .phase-badge { font-size: 10px; font-weight: 400; padding: 4px 12px; border-radius: 20px; white-space: nowrap; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 3px; }
+  .pb1 { background: #e8f4fd; color: #1a5276; }
+  .pb2 { background: #fef9e7; color: #7d6608; }
+  .pb3 { background: #f0ecfd; color: #4a235a; }
+  .pb4 { background: #eafaf1; color: #1e8449; }
+  .phase-title { font-family: 'Playfair Display', Georgia, serif; font-size: 18px; font-weight: 500; color: var(--navy); line-height: 1.3; }
+  .phase-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+  @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } .milestone-strip { grid-template-columns: repeat(3,1fr); } }
+
+  .col-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); font-weight: 400; margin-bottom: 10px; }
+  .step-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 9px; }
+  .step-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+  .d1 { background: #378ADD; } .d2 { background: #BA7517; } .d3 { background: #7F77DD; } .d4 { background: #639922; }
+  .step-text { font-size: 13px; line-height: 1.65; color: var(--text); }
+  .step-text strong { font-weight: 600; color: var(--navy); }
+
+  .income-box { border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 0.5rem; display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .inc-card { background: var(--bg-soft); border-radius: var(--radius-sm); padding: 10px 12px; }
+  .inc-label { font-size: 10px; color: var(--text-light); margin-bottom: 4px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; }
+  .inc-val { font-size: 16px; font-weight: 500; color: var(--navy); }
+  .inc-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .warn-note { font-size: 11px; color: var(--text-muted); background: var(--gold-pale); border-radius: var(--radius-sm); padding: 8px 12px; margin-top: 10px; line-height: 1.6; }
+
+  .section-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); border-top: 1px solid var(--border); padding-top: 1rem; margin-bottom: 1.25rem; font-weight: 400; }
+  .section-title { font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 500; margin-bottom: 1.25rem; color: var(--navy); }
+  .section { margin-bottom: 2.5rem; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 10px; font-size: 12px; color: var(--text-muted); }
+  .leg { display: flex; align-items: center; gap: 5px; }
+  .legsq { width: 10px; height: 10px; border-radius: 2px; }
+  .chart-wrap { position: relative; width: 100%; height: 300px; margin: 0.5rem 0 1rem; }
+
+  .ci-box { background: var(--navy); border-radius: var(--radius); padding: 1.5rem; margin-top: 2rem; border-top: 3px solid var(--gold); }
+  .ci-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; font-weight: 400; }
+  .ci-text { font-size: 14px; line-height: 1.85; color: rgba(255,255,255,0.8); margin: 0; }
+
+  .rns-box { background: var(--gold-pale); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-top: 1.25rem; }
+  .rns-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-weight: 400; margin-bottom: 8px; }
+  .rns-text { font-size: 14px; line-height: 1.75; color: var(--navy); margin: 0; }
+
+  .page-footer { background: var(--navy); color: rgba(255,255,255,0.3); font-size: 11px; text-align: center; padding: 1.5rem; border-top: 1px solid rgba(201,168,76,0.2); }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-inner">
+    <p class="header-kicker">Laporan Strategis &nbsp;·&nbsp; Ekonomi Digital &nbsp;·&nbsp; April 2026</p>
+    <h1 class="header-title">Workflow Best Practices & Proyeksi Income<br>Freelancer Digital Indonesia — 4 Fase</h1>
+    <p class="header-subtitle">Panduan operasional bertahap dari nol hingga penghasilan Rp 30–80 juta per bulan, dilengkapi asumsi income realistis, KPI terukur, dan analisis kritis per fase.</p>
+    <div class="header-meta">
+      <span>Analisis: Claude / Anthropic</span>
+      <span>·</span>
+      <span>Konteks: Pasar Freelance Indonesia & Global</span>
+      <span>·</span>
+      <span>April 2026</span>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <section class="section">
+    <p class="section-label">Ringkasan proyeksi income per fase</p>
+    <div class="milestone-strip">
+      <div class="ms p1"><p class="ms-period">Fase 1 awal</p><p class="ms-income">Rp 0–2 jt</p><p class="ms-tag">Bulan 1–3</p></div>
+      <div class="ms p1"><p class="ms-period">Fase 1 akhir</p><p class="ms-income">Rp 2–5 jt</p><p class="ms-tag">Bulan 4–6</p></div>
+      <div class="ms p2"><p class="ms-period">Fase 2</p><p class="ms-income">Rp 5–15 jt</p><p class="ms-tag">Bulan 7–12</p></div>
+      <div class="ms p3"><p class="ms-period">Fase 3</p><p class="ms-income">Rp 12–40 jt</p><p class="ms-tag">Bulan 13–24</p></div>
+      <div class="ms p4"><p class="ms-period">Fase 4</p><p class="ms-income">Rp 30–80 jt+</p><p class="ms-tag">Bulan 25+</p></div>
+    </div>
+  </section>
+
+  <!-- FASE 1 -->
+  <div class="phase-block">
+    <div class="phase-header">
+      <span class="phase-badge pb1">Fase 1 · Bulan 1–6</span>
+      <div>
+        <p class="phase-title">Fondasi & validasi</p>
+        <p class="phase-sub">Platform: Fastwork · Sribu · Lynk · Threads</p>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <p class="col-label">Workflow wajib</p>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text"><strong>Audit skill:</strong> list 3 skill terkuat, pilih 1 yang bisa dijual. Jangan generalis.</span></div>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text"><strong>Buat portofolio dummy</strong> (2–3 contoh kerja nyata atau spec work) sebelum daftar platform.</span></div>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text"><strong>Daftar Fastwork/Sribu,</strong> buat 3 gig dengan niche spesifik. Contoh: "desain konten Instagram untuk restoran", bukan "desain grafis".</span></div>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text"><strong>Harga di bawah pasar 20–30%</strong> untuk 5 order pertama — tujuannya review, bukan profit.</span></div>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text"><strong>Aktif di Threads:</strong> posting proses kerja, before/after, atau insight niche 3x seminggu.</span></div>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text"><strong>Kumpulkan 5+ review bintang 5</strong> sebelum naik harga. Review adalah aset utama fase ini.</span></div>
+      </div>
+      <div>
+        <p class="col-label">KPI yang diukur</p>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text">Jumlah gig aktif: minimal 3</span></div>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text">Order selesai bulan ke-3: minimal 5</span></div>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text">Rating rata-rata: ≥4.8</span></div>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text">Repeat client rate: ≥30%</span></div>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text">Followers Threads: +50/bulan</span></div>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text">Waktu kerja efektif: 2–3 jam/hari</span></div>
+        <p class="col-label" style="margin-top:14px;">Jebakan umum</p>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text">Daftar 4 platform sekaligus — hasilnya tidak ada yang optimal</span></div>
+        <div class="step-row"><span class="step-dot d1"></span><span class="step-text">Harga terlalu tinggi di awal tanpa portofolio pendukung</span></div>
+      </div>
+    </div>
+    <div class="income-box">
+      <div class="inc-card"><p class="inc-label">Pesimis</p><p class="inc-val">Rp 0–500 rb</p><p class="inc-sub">Bulan 1–2</p></div>
+      <div class="inc-card"><p class="inc-label">Realistis</p><p class="inc-val">Rp 1–3 jt</p><p class="inc-sub">Bulan 3–4</p></div>
+      <div class="inc-card"><p class="inc-label">Optimis</p><p class="inc-val">Rp 3–5 jt</p><p class="inc-sub">Bulan 5–6</p></div>
+    </div>
+    <p class="warn-note">Asumsi: skill desain grafis / copywriting / video editing level menengah. Harga gig lokal Rp 150rb–500rb/order. 5–12 order/bulan di bulan ke-4+. Belum dipotong fee platform (5–10%).</p>
+  </div>
+
+  <!-- FASE 2 -->
+  <div class="phase-block">
+    <div class="phase-header">
+      <span class="phase-badge pb2">Fase 2 · Bulan 7–12</span>
+      <div>
+        <p class="phase-title">Ekspansi & diversifikasi sumber</p>
+        <p class="phase-sub">Platform: Fastwork (lanjut) · Fiverr · Clicky/Lynk · Threads (makin aktif)</p>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <p class="col-label">Workflow wajib</p>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text"><strong>Daftar Fiverr</strong> dengan portofolio dari fase 1. Harga dalam USD — mulai $15–30/gig untuk entry.</span></div>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text"><strong>Buat 1 produk digital pertama</strong> (template Canva, ebook mini, preset) — jual di Clicky/Lynk.</span></div>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text"><strong>Naikkan harga lokal 30–50%</strong> dari fase 1 — kini sudah punya review dan reputasi.</span></div>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text"><strong>Pisahkan waktu:</strong> 60% eksekusi order, 20% marketing (Threads), 20% produk digital.</span></div>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text"><strong>Bangun email list</strong> minimal 100 subscriber via landing page sederhana.</span></div>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text"><strong>Minta testimonial video/screenshot</strong> dari 3 klien terbaik untuk konten Threads.</span></div>
+      </div>
+      <div>
+        <p class="col-label">KPI yang diukur</p>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text">Revenue Fiverr: $100–300/bulan di akhir fase</span></div>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text">Produk digital terjual: minimal 5 unit/bulan</span></div>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text">Total klien aktif berulang: 3–5 klien</span></div>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text">Threads followers: 300–500</span></div>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text">Email list: 100+ subscriber</span></div>
+        <p class="col-label" style="margin-top:14px;">Jebakan umum</p>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text">Mengabaikan produk digital karena jasa lebih "terasa nyata"</span></div>
+        <div class="step-row"><span class="step-dot d2"></span><span class="step-text">Tidak menaikkan harga meski demand sudah meningkat</span></div>
+      </div>
+    </div>
+    <div class="income-box">
+      <div class="inc-card"><p class="inc-label">Pesimis</p><p class="inc-val">Rp 3–5 jt</p><p class="inc-sub">Awal fase 2</p></div>
+      <div class="inc-card"><p class="inc-label">Realistis</p><p class="inc-val">Rp 6–10 jt</p><p class="inc-sub">Pertengahan</p></div>
+      <div class="inc-card"><p class="inc-label">Optimis</p><p class="inc-val">Rp 10–15 jt</p><p class="inc-sub">Akhir fase 2</p></div>
+    </div>
+    <p class="warn-note">Komposisi: ~60% jasa lokal + ~25% Fiverr (kurs USD Rp16.000) + ~15% produk digital. Fee Fiverr 20% sudah diperhitungkan. Harga jasa lokal naik ke Rp 400rb–1 jt/order.</p>
+  </div>
+
+  <!-- FASE 3 -->
+  <div class="phase-block">
+    <div class="phase-header">
+      <span class="phase-badge pb3">Fase 3 · Bulan 13–24</span>
+      <div>
+        <p class="phase-title">Profesionalisasi & income internasional</p>
+        <p class="phase-sub">Platform: Upwork · Fiverr (naik level) · Etsy · Threads (channel distribusi)</p>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <p class="col-label">Workflow wajib</p>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text"><strong>Daftar Upwork</strong> dengan proposal tajam — bukan "saya bisa banyak hal" tapi "saya spesialis X untuk industri Y".</span></div>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text"><strong>Kirim 5–10 proposal/minggu</strong> di Upwork selama 60 hari pertama. Ini investasi waktu, bukan langsung menghasilkan.</span></div>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text"><strong>Buka toko Etsy</strong> dengan produk digital yang sudah terbukti laku di pasar lokal. Optimasi SEO judul listing.</span></div>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text"><strong>Naikkan rate Fiverr</strong> ke $50–150/gig setelah Level 2 seller. Fokus upsell paket premium.</span></div>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text"><strong>Mulai retainer model:</strong> tawarkan kontrak bulanan ke klien Upwork terbaik ($200–500/bulan).</span></div>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text"><strong>Threads jadi mesin distribusi:</strong> setiap konten mengarahkan ke Etsy, Fiverr listing, atau landing page produk.</span></div>
+      </div>
+      <div>
+        <p class="col-label">KPI yang diukur</p>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text">Upwork: 1 kontrak aktif senilai $200+/bulan</span></div>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text">Fiverr: $300–600/bulan</span></div>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text">Etsy: 20–50 penjualan/bulan</span></div>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text">Retainer klien: 1–2 klien tetap</span></div>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text">Threads: 1.000+ followers, engagement 5%+</span></div>
+        <p class="col-label" style="margin-top:14px;">Jebakan umum</p>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text">Masuk Upwork tanpa memahami sistem Connects (biaya proposal)</span></div>
+        <div class="step-row"><span class="step-dot d3"></span><span class="step-text">Buka Etsy tanpa riset keyword listing terlebih dahulu</span></div>
+      </div>
+    </div>
+    <div class="income-box">
+      <div class="inc-card"><p class="inc-label">Pesimis</p><p class="inc-val">Rp 10–15 jt</p><p class="inc-sub">Bulan 13–16</p></div>
+      <div class="inc-card"><p class="inc-label">Realistis</p><p class="inc-val">Rp 18–25 jt</p><p class="inc-sub">Bulan 17–20</p></div>
+      <div class="inc-card"><p class="inc-label">Optimis</p><p class="inc-val">Rp 28–40 jt</p><p class="inc-sub">Bulan 21–24</p></div>
+    </div>
+    <p class="warn-note">Komposisi: ~40% Upwork + ~30% Fiverr + ~20% Etsy + ~10% produk lokal. Kurs USD Rp16.000. Upwork service fee 10% diperhitungkan. Etsy: rata-rata $3–8/produk × 30–60 unit/bulan.</p>
+  </div>
+
+  <!-- FASE 4 -->
+  <div class="phase-block">
+    <div class="phase-header">
+      <span class="phase-badge pb4">Fase 4 · Bulan 25+</span>
+      <div>
+        <p class="phase-title">Skalabilitas & owned business</p>
+        <p class="phase-sub">Platform: semua · ditambah website sendiri · email list · produk premium</p>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <p class="col-label">Workflow wajib</p>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text"><strong>Bangun website sendiri</strong> — owned asset yang bebas dari algoritma pihak ketiga.</span></div>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text"><strong>Ciptakan produk premium:</strong> kursus online, mentoring 1:1, atau template bundle $50–200.</span></div>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text"><strong>Naikkan rate ke premium tier:</strong> Upwork $50–100/jam, bukan per-project rate rendah.</span></div>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text"><strong>Delegasikan pekerjaan low-value:</strong> hire asisten/subkontraktor untuk order volume tinggi tapi margin rendah.</span></div>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text"><strong>Email marketing aktif:</strong> newsletter mingguan ke list — direct sales tanpa biaya platform.</span></div>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text"><strong>Diversifikasi stream:</strong> target 4–5 sumber income, tidak ada yang lebih dari 40% dari total.</span></div>
+      </div>
+      <div>
+        <p class="col-label">KPI yang diukur</p>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text">Total income: Rp 30–80 jt+/bulan</span></div>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text">Passive income ratio: ≥30% dari total</span></div>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text">Upwork JSS (Job Success Score): ≥90%</span></div>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text">Email list: 1.000+ subscriber aktif</span></div>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text">Dependency tertinggi per platform: &lt;40%</span></div>
+        <p class="col-label" style="margin-top:14px;">Jebakan umum</p>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text">Tetap trading waktu untuk uang tanpa membangun aset jangka panjang</span></div>
+        <div class="step-row"><span class="step-dot d4"></span><span class="step-text">Tidak menyisihkan pajak dari income USD (min. 10–15%)</span></div>
+      </div>
+    </div>
+    <div class="income-box">
+      <div class="inc-card"><p class="inc-label">Pesimis</p><p class="inc-val">Rp 25–35 jt</p><p class="inc-sub">Stagnasi niche</p></div>
+      <div class="inc-card"><p class="inc-label">Realistis</p><p class="inc-val">Rp 40–60 jt</p><p class="inc-sub">Konsisten</p></div>
+      <div class="inc-card"><p class="inc-label">Optimis</p><p class="inc-val">Rp 70–100 jt+</p><p class="inc-sub">Skala & delegasi</p></div>
+    </div>
+    <p class="warn-note">Asumsi optimis: 1 retainer Upwork $500/bulan + Etsy 100 unit/bulan + produk premium 5–10 penjualan + jasa langsung via website sendiri. Belum termasuk potensi dari kursus atau komunitas berbayar.</p>
+  </div>
+
+  <!-- CHART -->
+  <section class="section" style="margin-top:2.5rem;">
+    <p class="section-label">Proyeksi income kumulatif — 3 skenario</p>
+    <h2 class="section-title">Kurva pertumbuhan 30 bulan (Rp juta/bulan)</h2>
+    <div class="legend">
+      <span class="leg"><span class="legsq" style="background:#E24B4A;"></span>Pesimis</span>
+      <span class="leg"><span class="legsq" style="background:#BA7517;border:1.5px dashed #BA7517;background:transparent;border:1.5px solid #BA7517;"></span>Realistis</span>
+      <span class="leg"><span class="legsq" style="background:#639922;"></span>Optimis</span>
+      <span style="font-size:11px;color:var(--text-light);font-style:italic;">Asumsi: skill desain/copywriting level menengah</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="incomeChart" role="img" aria-label="Line chart income growth 30 months: pessimist 0 to 26M, realistic 0 to 47M, optimist 0 to 84M rupiah per month">Income projections over 30 months for three scenarios.</canvas>
+    </div>
+  </section>
+
+  <div class="ci-box">
+    <p class="ci-label">Critical insight — dari Claude</p>
+    <p class="ci-text">Proyeksi di atas valid secara teknis, tapi ada satu variabel yang paling menentukan dan tidak bisa diperhitungkan dalam grafik mana pun: konsistensi eksekusi di bulan 1–3. Mayoritas orang berhenti di fase ini bukan karena skill kurang, tapi karena tidak ada feedback positif yang cepat. Solusinya bukan motivasi, tapi rekayasa sistem: buat target mingguan yang sangat kecil dan terukur, lacak di spreadsheet, dan evaluasi setiap 2 minggu. Freelancer yang bertahan 6 bulan pertama memiliki tingkat keberhasilan jangka panjang yang jauh lebih tinggi dari rata-rata.</p>
+  </div>
+
+  <div class="rns-box">
+    <p class="rns-label">Recommended next step</p>
+    <p class="rns-text">Pilih satu platform, satu niche, dan satu format jasa/produk. Lakukan sprint 30 hari dengan target terukur — misalnya: 5 gig aktif, 10 proposal terkirim, atau 1 produk digital diluncurkan. Evaluasi data hasilnya sebelum diversifikasi ke platform kedua. Kesalahan paling umum: tersebar di banyak platform sebelum mahir di satu pun.</p>
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  Laporan Strategis · Freelancer Income Roadmap · April 2026 &nbsp;·&nbsp; Analisis oleh Claude / Anthropic &nbsp;·&nbsp; Matajaga Research Archive
+</footer>
+
+<script>
+const months = Array.from({length:30},(_,i)=>'Bln '+(i+1));
+const p = [0,0.2,0.5,1,1.5,2.5,3,4,5,6,6,7,8,9,10,11,12,13,14,15,16,18,20,22,23,24,25,25,26,26];
+const r = [0,0.3,0.8,2,3,4,6,7,8,10,11,12,14,16,18,20,22,24,26,28,30,33,36,40,42,43,44,45,46,47];
+const o = [0,0.5,1.5,3,4,6,8,10,12,15,16,18,22,26,30,34,38,40,45,50,55,60,65,70,74,76,78,80,82,84];
+new Chart(document.getElementById('incomeChart'),{
+  type:'line',
+  data:{
+    labels:months,
+    datasets:[
+      {label:'Pesimis',data:p,borderColor:'#E24B4A',backgroundColor:'rgba(226,75,74,0.05)',borderWidth:2,pointRadius:0,pointHoverRadius:4,fill:false,tension:0.4},
+      {label:'Realistis',data:r,borderColor:'#BA7517',backgroundColor:'rgba(186,117,23,0.05)',borderWidth:2.5,pointRadius:0,pointHoverRadius:4,fill:false,tension:0.4,borderDash:[6,3]},
+      {label:'Optimis',data:o,borderColor:'#639922',backgroundColor:'rgba(99,153,34,0.05)',borderWidth:2,pointRadius:0,pointHoverRadius:4,fill:false,tension:0.4}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    scales:{
+      x:{ticks:{font:{size:10},autoSkip:true,maxTicksLimit:10,color:'#999'},grid:{color:'rgba(0,0,0,0.05)'}},
+      y:{min:0,title:{display:true,text:'Rp juta/bulan',font:{size:10},color:'#999'},ticks:{font:{size:10},color:'#999',callback:v=>'Rp '+v+' jt'},grid:{color:'rgba(0,0,0,0.05)'}}
+    },
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': Rp '+ctx.parsed.y.toFixed(1)+' jt'}}
+    }
+  }
+});
+</script>
+</body>
+</html>
