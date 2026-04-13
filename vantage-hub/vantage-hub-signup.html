@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join The Vantage Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Roboto', Arial, sans-serif; background: #f8f9fa; color: #202124; font-size: 14px; min-height: 100vh; }
+
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 56px;
+  background: #fff; border-bottom: 1px solid #e8eaed;
+}
+.logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.logo svg { width: 28px; height: 28px; }
+.logo-text { font-size: 16px; font-weight: 500; color: #202124; }
+.logo-text span { color: #e8510a; }
+.nav-note { font-size: 13px; color: #5f6368; }
+.nav-note a { color: #1a73e8; text-decoration: none; }
+.nav-note a:hover { text-decoration: underline; }
+
+.page-wrap { max-width: 500px; margin: 36px auto; padding: 0 16px 60px; }
+
+/* PROGRESS */
+.progress-wrap { margin-bottom: 28px; }
+.progress-bar-row { display: flex; align-items: center; margin-bottom: 10px; }
+.p-dot {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+  transition: all 0.25s;
+}
+.p-dot.done   { background: #1a73e8; color: #fff; }
+.p-dot.active { background: #1a73e8; color: #fff; box-shadow: 0 0 0 4px #d2e3fc; }
+.p-dot.idle   { background: #e8eaed; color: #9aa0a6; }
+.p-line { flex: 1; height: 2px; background: #e8eaed; transition: background 0.25s; }
+.p-line.done  { background: #1a73e8; }
+.p-labels { display: flex; justify-content: space-between; }
+.p-lbl { font-size: 11px; color: #9aa0a6; text-align: center; flex: 1; }
+.p-lbl.active { color: #1a73e8; font-weight: 500; }
+.p-lbl.done   { color: #1a73e8; }
+
+/* CARD */
+.card { background: #fff; border: 1px solid #e8eaed; border-radius: 8px; padding: 32px; }
+.card-title { font-size: 20px; font-weight: 500; color: #202124; margin-bottom: 6px; }
+.card-sub   { font-size: 14px; color: #5f6368; margin-bottom: 28px; line-height: 1.6; }
+
+/* FORM */
+.field { margin-bottom: 18px; }
+.field label { display: block; font-size: 13px; font-weight: 500; color: #3c4043; margin-bottom: 6px; }
+.field label .req { color: #c5221f; margin-left: 2px; }
+.field label .opt { font-size: 11px; color: #9aa0a6; font-weight: 400; margin-left: 4px; }
+.field input, .field select {
+  width: 100%; padding: 10px 12px;
+  border: 1px solid #dadce0; border-radius: 4px;
+  font-size: 14px; font-family: 'Roboto', sans-serif;
+  color: #202124; background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+.field input:focus, .field select:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px #d2e3fc;
+}
+.field input::placeholder { color: #bdc1c6; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* MANDATORY NOTE */
+.mandatory-note { font-size: 12px; color: #9aa0a6; margin-bottom: 20px; }
+.mandatory-note span { color: #c5221f; }
+
+/* TOPIC GRID */
+.topic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+.topic-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px; border: 1px solid #e8eaed; border-radius: 6px;
+  cursor: pointer; transition: all 0.15s; user-select: none;
+  background: #fff;
+}
+.topic-item:hover { border-color: #1a73e8; background: #f8fbff; }
+.topic-item.selected { border-color: #1a73e8; background: #e8f0fe; }
+.topic-item input[type=checkbox] { display: none; }
+.topic-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.topic-name { font-size: 13px; font-weight: 500; color: #202124; line-height: 1.4; }
+.topic-desc { font-size: 11px; color: #5f6368; line-height: 1.4; margin-top: 2px; }
+.free-limit-note {
+  font-size: 12px; color: #b06000; background: #fef7e0;
+  border: 1px solid #fde293; border-radius: 4px;
+  padding: 8px 12px; margin-top: 8px; margin-bottom: 4px;
+  display: none;
+}
+.free-limit-note.show { display: block; }
+
+/* REGION PILLS */
+.region-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 4px; }
+.region-pill {
+  padding: 8px 18px; border: 1px solid #dadce0; border-radius: 100px;
+  font-size: 13px; cursor: pointer; user-select: none;
+  background: #fff; color: #3c4043; transition: all 0.15s;
+}
+.region-pill:hover { border-color: #1a73e8; color: #1a73e8; }
+.region-pill.selected { border-color: #1a73e8; background: #e8f0fe; color: #1a73e8; font-weight: 500; }
+
+/* INDUSTRY GRID */
+.industry-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.industry-item {
+  padding: 12px 10px; border: 1px solid #e8eaed; border-radius: 6px;
+  text-align: center; cursor: pointer; user-select: none;
+  transition: all 0.15s; background: #fff;
+}
+.industry-item:hover { border-color: #1a73e8; background: #f8fbff; }
+.industry-item.selected { border-color: #1a73e8; background: #e8f0fe; }
+.industry-icon { font-size: 22px; margin-bottom: 6px; }
+.industry-name { font-size: 12px; font-weight: 500; color: #202124; line-height: 1.3; }
+
+/* ACTIONS */
+.actions { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
+.btn-back {
+  padding: 10px 20px; border: 1px solid #dadce0; border-radius: 4px;
+  background: #fff; color: #5f6368; font-size: 14px; font-weight: 500;
+  cursor: pointer; font-family: 'Roboto', sans-serif; transition: all 0.15s;
+}
+.btn-back:hover { background: #f1f3f4; border-color: #bdc1c6; }
+.btn-next {
+  padding: 10px 28px; border: none; border-radius: 4px;
+  background: #1a73e8; color: #fff; font-size: 14px; font-weight: 500;
+  cursor: pointer; font-family: 'Roboto', sans-serif; transition: all 0.15s;
+}
+.btn-next:hover { background: #1557b0; }
+.btn-next:disabled { background: #e8eaed; color: #9aa0a6; cursor: not-allowed; }
+.btn-skip {
+  font-size: 13px; color: #1a73e8; background: none; border: none;
+  cursor: pointer; font-family: 'Roboto', sans-serif; padding: 10px 4px;
+}
+.btn-skip:hover { text-decoration: underline; }
+
+/* SUCCESS */
+.success-wrap { text-align: center; padding: 16px 0; }
+.success-icon { font-size: 52px; margin-bottom: 16px; }
+.success-title { font-size: 22px; font-weight: 500; color: #202124; margin-bottom: 8px; }
+.success-sub { font-size: 15px; color: #5f6368; margin-bottom: 28px; line-height: 1.7; }
+.btn-goto {
+  display: inline-block; padding: 12px 32px; border-radius: 4px;
+  background: #1a73e8; color: #fff; font-size: 15px; font-weight: 500;
+  cursor: pointer; border: none; font-family: 'Roboto', sans-serif;
+  transition: all 0.15s; text-decoration: none;
+}
+.btn-goto:hover { background: #1557b0; }
+
+/* PASSWORD TOGGLE */
+.input-wrap { position: relative; }
+.input-wrap input { padding-right: 40px; }
+.toggle-pw {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  cursor: pointer; font-size: 16px; color: #9aa0a6; user-select: none;
+}
+
+/* DIVIDER */
+.divider { border: none; border-top: 1px solid #e8eaed; margin: 24px 0; }
+
+@media (max-width: 480px) {
+  .field-row { grid-template-columns: 1fr; }
+  .topic-grid { grid-template-columns: 1fr; }
+  .industry-grid { grid-template-columns: repeat(2, 1fr); }
+  .card { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="vantage-hub-landing.html" class="logo">
+    <svg viewBox="0 0 34 34" fill="none">
+      <rect width="34" height="34" rx="6" fill="#e8510a"/>
+      <polygon points="17,6 28,14 28,24 17,29 6,24 6,14" fill="none" stroke="white" stroke-width="2"/>
+      <circle cx="17" cy="17" r="3.5" fill="white"/>
+      <line x1="17" y1="6" x2="17" y2="13" stroke="white" stroke-width="1.5"/>
+      <line x1="17" y1="21" x2="17" y2="28" stroke="white" stroke-width="1.5"/>
+      <line x1="6" y1="14" x2="13" y2="17" stroke="white" stroke-width="1.5"/>
+      <line x1="21" y1="17" x2="28" y2="14" stroke="white" stroke-width="1.5"/>
+    </svg>
+    <span class="logo-text">The Vantage <span>Hub</span></span>
+  </a>
+  <span class="nav-note">Already have an account? <a href="vantage-hub-signin.html">Sign in</a></span>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-bar-row">
+      <div class="p-dot active" id="dot-1">1</div>
+      <div class="p-line" id="line-1"></div>
+      <div class="p-dot idle" id="dot-2">2</div>
+      <div class="p-line" id="line-2"></div>
+      <div class="p-dot idle" id="dot-3">3</div>
+      <div class="p-line" id="line-3"></div>
+      <div class="p-dot idle" id="dot-4">4</div>
+    </div>
+    <div class="p-labels">
+      <span class="p-lbl active" id="lbl-1">Account</span>
+      <span class="p-lbl idle"   id="lbl-2">Role</span>
+      <span class="p-lbl idle"   id="lbl-3">Topics</span>
+      <span class="p-lbl idle"   id="lbl-4">Industry</span>
+    </div>
+  </div>
+
+  <!-- CARD -->
+  <div class="card" id="card">
+
+    <!-- STEP 1: Account -->
+    <div id="step-1">
+      <h2 class="card-title">Create your account</h2>
+      <p class="card-sub">Free to join. No credit card required.</p>
+      <p class="mandatory-note"><span>*</span> Required fields</p>
+
+      <div class="field">
+        <label>Full Name <span class="req">*</span></label>
+        <input type="text" id="f-name" placeholder="e.g. Budi Santoso" autocomplete="name">
+      </div>
+      <div class="field">
+        <label>Email Address <span class="req">*</span></label>
+        <input type="email" id="f-email" placeholder="e.g. budi@company.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>Password <span class="req">*</span></label>
+        <div class="input-wrap">
+          <input type="password" id="f-password" placeholder="Minimum 8 characters">
+          <span class="toggle-pw" onclick="togglePw()">👁</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <span></span>
+        <button class="btn-next" onclick="goStep(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Role -->
+    <div id="step-2" style="display:none">
+      <h2 class="card-title">Your role</h2>
+      <p class="card-sub">This helps us tailor your feed to content that matters for your position.</p>
+      <p class="mandatory-note"><span>*</span> Required fields</p>
+
+      <div class="field">
+        <label>Job Title / Position <span class="req">*</span></label>
+        <input type="text" id="f-jobtitle" placeholder="e.g. Security Manager, Head of Loss Prevention, HR Director">
+      </div>
+
+      <hr class="divider">
+      <p style="font-size:12px; color:#9aa0a6; margin-bottom:16px;">Optional — fill in later from your profile</p>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Company Name <span class="opt">(optional)</span></label>
+          <input type="text" id="f-company" placeholder="e.g. PT Astra International">
+        </div>
+        <div class="field">
+          <label>Country <span class="opt">(optional)</span></label>
+          <select id="f-country">
+            <option value="">Select country</option>
+            <option value="ID" selected>🇮🇩 Indonesia</option>
+            <option value="MY">🇲🇾 Malaysia</option>
+            <option value="SG">🇸🇬 Singapore</option>
+            <option value="PH">🇵🇭 Philippines</option>
+            <option value="TH">🇹🇭 Thailand</option>
+            <option value="VN">🇻🇳 Vietnam</option>
+            <option value="CN">🇨🇳 China</option>
+            <option value="JP">🇯🇵 Japan</option>
+            <option value="KR">🇰🇷 South Korea</option>
+            <option value="AU">🇦🇺 Australia</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-back" onclick="goStep(1)">← Back</button>
+        <button class="btn-next" onclick="goStep(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Topics -->
+    <div id="step-3" style="display:none">
+      <h2 class="card-title">Choose your topics</h2>
+      <p class="card-sub">Select the security areas most relevant to your work. <strong>Free accounts: up to 2 topics.</strong> Subscribe to unlock all.</p>
+
+      <div class="topic-grid" id="topic-grid">
+
+        <label class="topic-item" onclick="selectTopic(this)">
+          <input type="checkbox" value="loss-prevention">
+          <span class="topic-icon">🛡️</span>
+          <div>
+            <div class="topic-name">Loss Prevention &amp; Asset Protection</div>
+            <div class="topic-desc">Retail, cargo, internal fraud, investigations</div>
+          </div>
+        </label>
+
+        <label class="topic-item" onclick="selectTopic(this)">
+          <input type="checkbox" value="risk-management">
+          <span class="topic-icon">⚠️</span>
+          <div>
+            <div class="topic-name">Risk Management &amp; Corporate Security</div>
+            <div class="topic-desc">Risk assessment, BCP, crisis management</div>
+          </div>
+        </label>
+
+        <label class="topic-item" onclick="selectTopic(this)">
+          <input type="checkbox" value="physical-security">
+          <span class="topic-icon">🏢</span>
+          <div>
+            <div class="topic-name">Physical Security Operations</div>
+            <div class="topic-desc">CCTV, access control, patrol, perimeter</div>
+          </div>
+        </label>
+
+        <label class="topic-item" onclick="selectTopic(this)">
+          <input type="checkbox" value="standards">
+          <span class="topic-icon">📋</span>
+          <div>
+            <div class="topic-name">Standards &amp; Regulations</div>
+            <div class="topic-desc">UU, Perkapolri, BNSP, Permen, ASIS, ISO</div>
+          </div>
+        </label>
+
+        <label class="topic-item" onclick="selectTopic(this)">
+          <input type="checkbox" value="security-tech">
+          <span class="topic-icon">🔧</span>
+          <div>
+            <div class="topic-name">Security Technology &amp; Equipment</div>
+            <div class="topic-desc">Product launches, innovations, market news</div>
+          </div>
+        </label>
+
+        <label class="topic-item" onclick="selectTopic(this)">
+          <input type="checkbox" value="cybersecurity">
+          <span class="topic-icon">🔒</span>
+          <div>
+            <div class="topic-name">Cybersecurity</div>
+            <div class="topic-desc">IoT, network security, digital fraud</div>
+          </div>
+        </label>
+
+      </div>
+
+      <div class="free-limit-note" id="free-limit-note">
+        Free accounts are limited to 2 topics. <a href="vantage-hub-pricing.html" style="color:#b06000;font-weight:500;">Subscribe</a> to select all topics.
+      </div>
+
+      <div class="actions">
+        <button class="btn-back" onclick="goStep(2)">← Back</button>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="btn-skip" onclick="goStep(4)">Skip for now</button>
+          <button class="btn-next" onclick="goStep(4)">Continue →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Industry -->
+    <div id="step-4" style="display:none">
+      <h2 class="card-title">Your industry</h2>
+      <p class="card-sub">Optional — helps us surface the most relevant news and case studies for your sector.</p>
+
+      <div class="industry-grid">
+
+        <div class="industry-item" onclick="selectIndustry(this)">
+          <div class="industry-icon">🏦</div>
+          <div class="industry-name">Banking &amp; Finance</div>
+        </div>
+
+        <div class="industry-item" onclick="selectIndustry(this)">
+          <div class="industry-icon">🛢️</div>
+          <div class="industry-name">Oil, Gas &amp; Energy</div>
+        </div>
+
+        <div class="industry-item" onclick="selectIndustry(this)">
+          <div class="industry-icon">🏢</div>
+          <div class="industry-name">Corporate &amp; Enterprise</div>
+        </div>
+
+        <div class="industry-item" onclick="selectIndustry(this)">
+          <div class="industry-icon">🏛️</div>
+          <div class="industry-name">Government &amp; Public Sector</div>
+        </div>
+
+        <div class="industry-item" onclick="selectIndustry(this)">
+          <div class="industry-icon">⚡</div>
+          <div class="industry-name">Critical Infrastructure</div>
+        </div>
+
+        <div class="industry-item" onclick="selectIndustry(this)">
+          <div class="industry-icon">🛒</div>
+          <div class="industry-name">Retail &amp; Consumer</div>
+        </div>
+
+        <div class="industry-item" onclick="selectIndustry(this)">
+          <div class="industry-icon">🏭</div>
+          <div class="industry-name">Manufacturing &amp; Industrial</div>
+        </div>
+
+        <div class="industry-item" onclick="selectIndustry(this)">
+          <div class="industry-icon">🎪</div>
+          <div class="industry-name">Events &amp; Crowd Security</div>
+        </div>
+
+        <div class="industry-item" onclick="selectIndustry(this)">
+          <div class="industry-icon">🏥</div>
+          <div class="industry-name">Healthcare &amp; Facilities</div>
+        </div>
+
+      </div>
+
+      <div class="actions" style="margin-top:28px;">
+        <button class="btn-back" onclick="goStep(3)">← Back</button>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="btn-skip" onclick="goSuccess()">Skip</button>
+          <button class="btn-next" onclick="goSuccess()">Finish →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div id="step-success" style="display:none">
+      <div class="success-wrap">
+        <div class="success-icon">✅</div>
+        <h2 class="success-title">You're all set!</h2>
+        <p class="success-sub">
+          Welcome to The Vantage Hub.<br>
+          Your personalized security feed is ready.<br>
+          You can update your topics and preferences anytime from your profile.
+        </p>
+        <a href="vantage-hub-feed.html" class="btn-goto">Go to My Feed →</a>
+      </div>
+    </div>
+
+  </div>
+  <!-- /card -->
+
+</div>
+
+<script>
+let currentStep = 1;
+let selectedTopics = 0;
+const FREE_LIMIT = 2;
+
+function goStep(n) {
+  // hide current
+  document.getElementById('step-' + currentStep).style.display = 'none';
+  // show new
+  document.getElementById('step-' + n).style.display = 'block';
+
+  // update progress
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('dot-' + i);
+    const lbl = document.getElementById('lbl-' + i);
+    if (i < n) {
+      dot.className = 'p-dot done';
+      dot.innerHTML = '✓';
+      lbl.className = 'p-lbl done';
+    } else if (i === n) {
+      dot.className = 'p-dot active';
+      dot.innerHTML = i;
+      lbl.className = 'p-lbl active';
+    } else {
+      dot.className = 'p-dot idle';
+      dot.innerHTML = i;
+      lbl.className = 'p-lbl idle';
+    }
+    if (i < 4) {
+      const line = document.getElementById('line-' + i);
+      line.className = i < n ? 'p-line done' : 'p-line';
+    }
+  }
+  currentStep = n;
+}
+
+function goSuccess() {
+  document.getElementById('step-4').style.display = 'none';
+  document.getElementById('step-success').style.display = 'block';
+  // all dots done
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('dot-' + i);
+    const lbl = document.getElementById('lbl-' + i);
+    dot.className = 'p-dot done';
+    dot.innerHTML = '✓';
+    lbl.className = 'p-lbl done';
+    if (i < 4) document.getElementById('line-' + i).className = 'p-line done';
+  }
+  document.querySelector('.progress-wrap').style.display = 'none';
+}
+
+function selectTopic(el) {
+  const checkbox = el.querySelector('input[type=checkbox]');
+  const isSelected = el.classList.contains('selected');
+
+  if (!isSelected && selectedTopics >= FREE_LIMIT) {
+    document.getElementById('free-limit-note').classList.add('show');
+    return;
+  }
+
+  el.classList.toggle('selected');
+  checkbox.checked = !isSelected;
+  selectedTopics = document.querySelectorAll('.topic-item.selected').length;
+
+  if (selectedTopics < FREE_LIMIT) {
+    document.getElementById('free-limit-note').classList.remove('show');
+  }
+}
+
+function selectIndustry(el) {
+  document.querySelectorAll('.industry-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function togglePw() {
+  const pw = document.getElementById('f-password');
+  pw.type = pw.type === 'password' ? 'text' : 'password';
+}
+</script>
+</body>
+</html>
