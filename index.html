@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matajaga Research Archive — Claude Intelligence Library</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,300;400;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0a1628;
+    --navy2: #112240;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --gold-pale: #fdf6e3;
+    --text: #1a1a2e;
+    --text-muted: #5a5a7a;
+    --text-light: #9090aa;
+    --border: rgba(201,168,76,0.2);
+    --border-strong: rgba(201,168,76,0.4);
+    --bg: #f8f7f4;
+    --white: #ffffff;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    padding: 4rem 2rem 3rem;
+    border-bottom: 3px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 900px; margin: 0 auto; position: relative; }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .brand-mark {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--gold);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: -0.5px;
+  }
+  .brand-text {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 400;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  .hero-title span { color: var(--gold); }
+  .hero-desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+    max-width: 560px;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+  }
+  .hero-stats {
+    display: flex; gap: 32px; flex-wrap: wrap;
+  }
+  .stat { }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  /* NAV */
+  .nav-strip {
+    background: var(--navy2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .nav-item {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    padding: 14px 16px;
+    white-space: nowrap;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .nav-item:hover, .nav-item.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* MAIN */
+  .main { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--navy);
+  }
+  .section-count {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+
+  /* REPORT CARDS */
+  .report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 16px;
+    margin-bottom: 3rem;
+  }
+  @media (max-width: 600px) { .report-grid { grid-template-columns: 1fr; } }
+
+  .report-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.5rem;
+    text-decoration: none;
+    display: block;
+    transition: border-color 0.2s, transform 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .report-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .report-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+  }
+  .report-card:hover::before { opacity: 1; }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .card-category {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 400;
+  }
+  .cat-ekonomi { background: #e8f4fd; color: #1a5276; }
+  .cat-strategi { background: #fef9e7; color: #7d6608; }
+  .cat-riset { background: #f0ecfd; color: #4a235a; }
+  .cat-analisis { background: #eafaf1; color: #1e8449; }
+
+  .card-date {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 0.04em;
+  }
+  .card-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.35;
+    margin-bottom: 8px;
+  }
+  .card-desc {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+  .card-tags {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 10px;
+    color: var(--text-light);
+    background: var(--bg);
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  .card-arrow {
+    font-size: 16px;
+    color: var(--gold);
+    font-weight: 300;
+  }
+
+  /* PLACEHOLDER CARD */
+  .report-card.placeholder {
+    border-style: dashed;
+    opacity: 0.5;
+    pointer-events: none;
+    background: transparent;
+  }
+  .placeholder-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    gap: 8px;
+  }
+  .placeholder-icon {
+    width: 32px; height: 32px;
+    border: 1.5px dashed var(--border-strong);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    color: var(--gold);
+  }
+  .placeholder-text {
+    font-size: 13px;
+    color: var(--text-light);
+    text-align: center;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  /* HOW TO ADD */
+  .how-to {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 3rem;
+  }
+  .how-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .how-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .how-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .how-step {
+    background: rgba(255,255,255,0.05);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    border: 1px solid rgba(201,168,76,0.1);
+  }
+  .how-step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    opacity: 0.5;
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+  .how-step-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+  }
+  .how-step-text code {
+    font-family: monospace;
+    font-size: 11px;
+    background: rgba(201,168,76,0.1);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--gold-light);
+  }
+
+  /* FOOTER */
+  .page-footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.25);
+    font-size: 11px;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    line-height: 1.8;
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <div class="brand-mark">MJ</div>
+      <span class="brand-text">Matajaga Research Archive</span>
+    </div>
+    <h1 class="hero-title">Claude <span>Intelligence</span> Library</h1>
+    <p class="hero-desc">Arsip hasil riset, analisis strategis, dan laporan interaktif yang dihasilkan bersama Claude — tersimpan permanen, dapat diakses kapan saja.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <p class="stat-num" id="report-count">2</p>
+        <p class="stat-label">Laporan tersimpan</p>
+      </div>
+      <div class="stat">
+        <p class="stat-num">2026</p>
+        <p class="stat-label">Tahun dimulai</p>
+      </div>
+      <div class="stat">
+        <p class="stat-num">∞</p>
+        <p class="stat-label">Kapasitas arsip</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav-strip">
+  <div class="nav-inner">
+    <a href="#" class="nav-item active">Semua laporan</a>
+    <a href="#" class="nav-item">Ekonomi digital</a>
+    <a href="#" class="nav-item">Strategi bisnis</a>
+    <a href="#" class="nav-item">Analisis pasar</a>
+    <a href="#" class="nav-item">Trading & investasi</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <div class="section-header">
+    <h2 class="section-title">Laporan terbaru</h2>
+    <span class="section-count">2 laporan · April 2026</span>
+  </div>
+
+  <div class="report-grid">
+
+    <!-- Laporan 1 -->
+    <a href="digital-platform-research/index.html" class="report-card">
+      <div class="card-meta">
+        <span class="card-category cat-ekonomi">Ekonomi digital</span>
+        <span class="card-date">April 2026</span>
+      </div>
+      <h3 class="card-title">Pemetaan Ekosistem Platform Monetisasi Digital bagi Freelancer & Kreator Indonesia</h3>
+      <p class="card-desc">Analisis komparatif 8 platform — Fastwork, Sribu, Fiverr, Upwork, Etsy, Lynk, Clicky, dan Threads — berdasarkan matriks pasar × model bisnis, dilengkapi kritik analitis dan rekomendasi strategis.</p>
+      <div class="card-footer">
+        <div class="card-tags">
+          <span class="tag">Platform</span>
+          <span class="tag">Freelance</span>
+          <span class="tag">Indonesia</span>
+        </div>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Laporan 2 -->
+    <a href="freelancer-income-roadmap/index.html" class="report-card">
+      <div class="card-meta">
+        <span class="card-category cat-strategi">Strategi & roadmap</span>
+        <span class="card-date">April 2026</span>
+      </div>
+      <h3 class="card-title">Workflow Best Practices & Proyeksi Income Freelancer Digital — 4 Fase</h3>
+      <p class="card-desc">Panduan operasional bertahap dari nol hingga Rp 30–80 juta per bulan, dengan KPI terukur per fase, asumsi income pesimis/realistis/optimis, dan kurva pertumbuhan 30 bulan.</p>
+      <div class="card-footer">
+        <div class="card-tags">
+          <span class="tag">Income</span>
+          <span class="tag">Workflow</span>
+          <span class="tag">Roadmap</span>
+        </div>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Placeholder -->
+    <div class="report-card placeholder">
+      <div class="placeholder-inner">
+        <div class="placeholder-icon">+</div>
+        <p class="placeholder-text">Laporan berikutnya<br>akan muncul di sini</p>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <!-- HOW TO ADD -->
+  <div class="how-to">
+    <p class="how-label">Cara menambah laporan baru</p>
+    <p class="how-title">Setiap kali Claude menghasilkan sesuatu yang ingin disimpan</p>
+    <div class="how-steps">
+      <div class="how-step">
+        <p class="how-step-num">01</p>
+        <p class="how-step-text">Minta Claude: <code>"buat sebagai file HTML standalone"</code> lalu download file-nya</p>
+      </div>
+      <div class="how-step">
+        <p class="how-step-num">02</p>
+        <p class="how-step-text">Di GitHub: <code>Add file → Create new file</code>, ketik <code>nama-laporan/index.html</code></p>
+      </div>
+      <div class="how-step">
+        <p class="how-step-num">03</p>
+        <p class="how-step-text">Paste isi file HTML ke kotak konten, lalu klik <code>Commit changes</code></p>
+      </div>
+      <div class="how-step">
+        <p class="how-step-num">04</p>
+        <p class="how-step-text">Tambahkan kartu laporan baru di <code>index.html</code> ini dengan link ke folder tersebut</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  <p class="footer-brand">Matajaga Research Archive</p>
+  <p>Arsip ini dibangun dan dikelola bersama Claude / Anthropic &nbsp;·&nbsp; PT HRM Multi Sinergy · Matajaga</p>
+  <p style="margin-top:4px;">Jakarta, Indonesia &nbsp;·&nbsp; matajaga.com</p>
+</footer>
+
+</body>
+</html>
