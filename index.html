@@ -3,495 +3,340 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matajaga Research Archive — Claude Intelligence Library</title>
+<title>Claude Intelligence Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,300;400;600&display=swap');
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --navy: #0a1628;
-    --navy2: #112240;
-    --gold: #c9a84c;
-    --gold-light: #e8c96a;
-    --gold-pale: #fdf6e3;
-    --text: #1a1a2e;
-    --text-muted: #5a5a7a;
-    --text-light: #9090aa;
-    --border: rgba(201,168,76,0.2);
-    --border-strong: rgba(201,168,76,0.4);
-    --bg: #f8f7f4;
-    --white: #ffffff;
-    --radius: 12px;
-    --radius-sm: 8px;
-  }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Source Serif 4', Georgia, serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-    min-height: 100vh;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* HERO */
-  .hero {
-    background: var(--navy);
-    padding: 4rem 2rem 3rem;
-    border-bottom: 3px solid var(--gold);
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-inner { max-width: 900px; margin: 0 auto; position: relative; }
-  .hero-eyebrow {
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 1.5rem;
-  }
-  .brand-mark {
-    width: 36px; height: 36px;
-    border: 1.5px solid var(--gold);
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--gold);
-    letter-spacing: -0.5px;
-  }
-  .brand-text {
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 400;
-  }
-  .hero-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(28px, 5vw, 48px);
-    font-weight: 700;
-    line-height: 1.15;
-    color: #fff;
-    margin-bottom: 1rem;
-  }
-  .hero-title span { color: var(--gold); }
-  .hero-desc {
-    font-size: 15px;
-    font-weight: 300;
-    color: rgba(255,255,255,0.55);
-    max-width: 560px;
-    margin-bottom: 2rem;
-    line-height: 1.8;
-  }
-  .hero-stats {
-    display: flex; gap: 32px; flex-wrap: wrap;
-  }
-  .stat { }
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-  }
-  .stat-label {
-    font-size: 11px;
-    color: rgba(255,255,255,0.35);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-top: 3px;
-  }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0d1117;
+  color: #e6edf3;
+  min-height: 100vh;
+}
 
-  /* NAV */
-  .nav-strip {
-    background: var(--navy2);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-  }
-  .nav-inner {
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    gap: 0;
-    overflow-x: auto;
-  }
-  .nav-item {
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
-    padding: 14px 16px;
-    white-space: nowrap;
-    text-decoration: none;
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .nav-item:hover, .nav-item.active {
-    color: var(--gold);
-    border-bottom-color: var(--gold);
-  }
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+  border-bottom: 1px solid #21262d;
+  padding: 64px 24px 48px;
+  text-align: center;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 6vw, 56px);
+  color: #e6edf3;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.hero h1 span { color: #d4a843; }
+.hero p {
+  font-size: 15px;
+  color: #8b949e;
+  max-width: 520px;
+  margin: 0 auto 40px;
+  line-height: 1.8;
+}
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: #d4a843;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-size: 11px;
+  color: #8b949e;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
 
-  /* MAIN */
-  .main { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+/* ── NAV TABS ── */
+.tabs-wrap {
+  border-bottom: 1px solid #21262d;
+  background: #161b22;
+}
+.tabs {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  padding: 0 24px;
+  overflow-x: auto;
+}
+.tab {
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #8b949e;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.15s;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.tab:hover { color: #e6edf3; }
+.tab.active { color: #d4a843; border-bottom-color: #d4a843; }
 
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 1.25rem;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .section-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--navy);
-  }
-  .section-count {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-light);
-  }
+/* ── MAIN ── */
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #8b949e;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.section-meta {
+  font-size: 12px;
+  color: #6e7681;
+}
 
-  /* REPORT CARDS */
-  .report-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    gap: 16px;
-    margin-bottom: 3rem;
-  }
-  @media (max-width: 600px) { .report-grid { grid-template-columns: 1fr; } }
+/* ── CARDS ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.card {
+  background: #161b22;
+  border: 1px solid #21262d;
+  border-radius: 10px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent, #d4a843);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.card:hover {
+  border-color: #30363d;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  transform: translateY(-2px);
+}
+.card:hover::before { opacity: 1; }
 
-  .report-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.4rem 1.5rem;
-    text-decoration: none;
-    display: block;
-    transition: border-color 0.2s, transform 0.15s;
-    position: relative;
-    overflow: hidden;
-  }
-  .report-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--gold);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .report-card:hover {
-    border-color: var(--border-strong);
-    transform: translateY(-2px);
-  }
-  .report-card:hover::before { opacity: 1; }
+.card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  width: fit-content;
+}
+.tag-ekonomi { background: #1a2744; color: #79b8ff; --accent: #79b8ff; }
+.tag-strategi { background: #2a1a00; color: #d4a843; --accent: #d4a843; }
+.tag-keamanan { background: #1a2a1a; color: #56d364; --accent: #56d364; }
 
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-  }
-  .card-category {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 9px;
-    border-radius: 20px;
-    font-weight: 400;
-  }
-  .cat-ekonomi { background: #e8f4fd; color: #1a5276; }
-  .cat-strategi { background: #fef9e7; color: #7d6608; }
-  .cat-riset { background: #f0ecfd; color: #4a235a; }
-  .cat-analisis { background: #eafaf1; color: #1e8449; }
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e6edf3;
+  line-height: 1.5;
+}
+.card-desc {
+  font-size: 13px;
+  color: #8b949e;
+  line-height: 1.7;
+  flex: 1;
+}
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid #21262d;
+  margin-top: auto;
+}
+.card-date { font-size: 11px; color: #6e7681; }
+.card-arrow {
+  font-size: 14px;
+  color: #6e7681;
+  transition: transform 0.2s, color 0.2s;
+}
+.card:hover .card-arrow {
+  transform: translateX(4px);
+  color: #d4a843;
+}
+.card-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pill {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 100px;
+  border: 1px solid #30363d;
+  color: #8b949e;
+}
 
-  .card-date {
-    font-size: 11px;
-    color: var(--text-light);
-    letter-spacing: 0.04em;
-  }
-  .card-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 17px;
-    font-weight: 500;
-    color: var(--navy);
-    line-height: 1.35;
-    margin-bottom: 8px;
-  }
-  .card-desc {
-    font-size: 13px;
-    line-height: 1.65;
-    color: var(--text-muted);
-    margin-bottom: 14px;
-  }
-  .card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 1px solid var(--border);
-    padding-top: 10px;
-  }
-  .card-tags {
-    display: flex; gap: 6px; flex-wrap: wrap;
-  }
-  .tag {
-    font-size: 10px;
-    color: var(--text-light);
-    background: var(--bg);
-    padding: 2px 7px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-  }
-  .card-arrow {
-    font-size: 16px;
-    color: var(--gold);
-    font-weight: 300;
-  }
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid #21262d;
+  padding: 24px;
+  text-align: center;
+  background: #0d1117;
+}
+footer p { font-size: 12px; color: #6e7681; }
 
-  /* PLACEHOLDER CARD */
-  .report-card.placeholder {
-    border-style: dashed;
-    opacity: 0.5;
-    pointer-events: none;
-    background: transparent;
-  }
-  .placeholder-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 140px;
-    gap: 8px;
-  }
-  .placeholder-icon {
-    width: 32px; height: 32px;
-    border: 1.5px dashed var(--border-strong);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    color: var(--gold);
-  }
-  .placeholder-text {
-    font-size: 13px;
-    color: var(--text-light);
-    text-align: center;
-  }
-
-  /* DIVIDER */
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 2.5rem 0;
-  }
-
-  /* HOW TO ADD */
-  .how-to {
-    background: var(--navy);
-    border-radius: var(--radius);
-    padding: 1.5rem 1.75rem;
-    margin-bottom: 3rem;
-  }
-  .how-label {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 10px;
-  }
-  .how-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    font-weight: 500;
-    color: #fff;
-    margin-bottom: 12px;
-  }
-  .how-steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-  }
-  .how-step {
-    background: rgba(255,255,255,0.05);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-    border: 1px solid rgba(201,168,76,0.1);
-  }
-  .how-step-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--gold);
-    opacity: 0.5;
-    line-height: 1;
-    margin-bottom: 5px;
-  }
-  .how-step-text {
-    font-size: 12px;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.6;
-  }
-  .how-step-text code {
-    font-family: monospace;
-    font-size: 11px;
-    background: rgba(201,168,76,0.1);
-    padding: 1px 5px;
-    border-radius: 3px;
-    color: var(--gold-light);
-  }
-
-  /* FOOTER */
-  .page-footer {
-    background: var(--navy);
-    color: rgba(255,255,255,0.25);
-    font-size: 11px;
-    text-align: center;
-    padding: 2rem 1.5rem;
-    border-top: 1px solid rgba(201,168,76,0.15);
-    line-height: 1.8;
-  }
-  .footer-brand {
-    font-family: 'Playfair Display', serif;
-    font-size: 14px;
-    color: var(--gold);
-    margin-bottom: 4px;
-  }
+@media (max-width: 600px) {
+  .stats-row { gap: 28px; }
+  .cards-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="hero-inner">
-    <div class="hero-eyebrow">
-      <div class="brand-mark">MJ</div>
-      <span class="brand-text">Matajaga Research Archive</span>
+<!-- HERO -->
+<div class="hero">
+  <h1>Claude <span>Intelligence</span> Library</h1>
+  <p>Arsip hasil riset, analisis strategis, dan laporan interaktif yang dihasilkan bersama Claude — tersimpan permanen, dapat diakses kapan saja.</p>
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Laporan Tersimpan</div>
     </div>
-    <h1 class="hero-title">Claude <span>Intelligence</span> Library</h1>
-    <p class="hero-desc">Arsip hasil riset, analisis strategis, dan laporan interaktif yang dihasilkan bersama Claude — tersimpan permanen, dapat diakses kapan saja.</p>
-    <div class="hero-stats">
-      <div class="stat">
-        <p class="stat-num" id="report-count">2</p>
-        <p class="stat-label">Laporan tersimpan</p>
-      </div>
-      <div class="stat">
-        <p class="stat-num">2026</p>
-        <p class="stat-label">Tahun dimulai</p>
-      </div>
-      <div class="stat">
-        <p class="stat-num">∞</p>
-        <p class="stat-label">Kapasitas arsip</p>
-      </div>
+    <div class="stat-item">
+      <div class="stat-num">2026</div>
+      <div class="stat-label">Tahun Dimulai</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Kapasitas Arsip</div>
     </div>
   </div>
-</header>
+</div>
 
-<nav class="nav-strip">
-  <div class="nav-inner">
-    <a href="#" class="nav-item active">Semua laporan</a>
-    <a href="#" class="nav-item">Ekonomi digital</a>
-    <a href="#" class="nav-item">Strategi bisnis</a>
-    <a href="#" class="nav-item">Analisis pasar</a>
-    <a href="#" class="nav-item">Trading & investasi</a>
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="filterTab(this,'semua')">Semua Laporan</button>
+    <button class="tab" onclick="filterTab(this,'ekonomi')">Ekonomi Digital</button>
+    <button class="tab" onclick="filterTab(this,'strategi')">Strategi Bisnis</button>
+    <button class="tab" onclick="filterTab(this,'keamanan')">Keamanan & Security</button>
   </div>
-</nav>
+</div>
 
-<main class="main">
-
+<!-- MAIN -->
+<div class="main">
   <div class="section-header">
-    <h2 class="section-title">Laporan terbaru</h2>
-    <span class="section-count">2 laporan · April 2026</span>
+    <div class="section-title">Laporan Terbaru</div>
+    <div class="section-meta" id="count-label">3 LAPORAN · APRIL 2026</div>
   </div>
 
-  <div class="report-grid">
+  <div class="cards-grid" id="cards">
 
-    <!-- Laporan 1 -->
-    <a href="digital-platform-research/index.html" class="report-card">
-      <div class="card-meta">
-        <span class="card-category cat-ekonomi">Ekonomi digital</span>
-        <span class="card-date">April 2026</span>
+    <!-- CARD 1 -->
+    <a class="card" href="digital-platform-research/index.html" data-cat="ekonomi" style="--accent:#79b8ff">
+      <div class="card-tag tag-ekonomi">📊 Ekonomi Digital</div>
+      <div class="card-title">Pemetaan Ekosistem Platform Monetisasi Digital bagi Freelancer & Kreator Indonesia</div>
+      <div class="card-desc">Analisis komparatif 8 platform — Fastwork, Sribu, Fiverr, Upwork, Etsy, Lynk, Clicky, dan Threads — berdasarkan matriks pasar × model bisnis, dilengkapi kritik analitis dan rekomendasi strategis.</div>
+      <div class="card-tags-row">
+        <span class="pill">Platform</span>
+        <span class="pill">Freelance</span>
+        <span class="pill">Indonesia</span>
       </div>
-      <h3 class="card-title">Pemetaan Ekosistem Platform Monetisasi Digital bagi Freelancer & Kreator Indonesia</h3>
-      <p class="card-desc">Analisis komparatif 8 platform — Fastwork, Sribu, Fiverr, Upwork, Etsy, Lynk, Clicky, dan Threads — berdasarkan matriks pasar × model bisnis, dilengkapi kritik analitis dan rekomendasi strategis.</p>
       <div class="card-footer">
-        <div class="card-tags">
-          <span class="tag">Platform</span>
-          <span class="tag">Freelance</span>
-          <span class="tag">Indonesia</span>
-        </div>
+        <span class="card-date">April 2026</span>
         <span class="card-arrow">→</span>
       </div>
     </a>
 
-    <!-- Laporan 2 -->
-    <a href="freelancer-income-roadmap/index.html" class="report-card">
-      <div class="card-meta">
-        <span class="card-category cat-strategi">Strategi & roadmap</span>
-        <span class="card-date">April 2026</span>
+    <!-- CARD 2 -->
+    <a class="card" href="freelancer-income-roadmap/index.html" data-cat="strategi" style="--accent:#d4a843">
+      <div class="card-tag tag-strategi">🗺 Strategi & Roadmap</div>
+      <div class="card-title">Workflow Best Practices & Proyeksi Income Freelancer Digital — 4 Fase</div>
+      <div class="card-desc">Panduan operasional bertahap dari nol hingga Rp 30–80 juta per bulan, dengan KPI terukur per fase, asumsi income pesimis/realistis/optimis, dan kurva pertumbuhan 30 bulan.</div>
+      <div class="card-tags-row">
+        <span class="pill">Income</span>
+        <span class="pill">Workflow</span>
+        <span class="pill">Roadmap</span>
       </div>
-      <h3 class="card-title">Workflow Best Practices & Proyeksi Income Freelancer Digital — 4 Fase</h3>
-      <p class="card-desc">Panduan operasional bertahap dari nol hingga Rp 30–80 juta per bulan, dengan KPI terukur per fase, asumsi income pesimis/realistis/optimis, dan kurva pertumbuhan 30 bulan.</p>
       <div class="card-footer">
-        <div class="card-tags">
-          <span class="tag">Income</span>
-          <span class="tag">Workflow</span>
-          <span class="tag">Roadmap</span>
-        </div>
+        <span class="card-date">April 2026</span>
         <span class="card-arrow">→</span>
       </div>
     </a>
 
-    <!-- Placeholder -->
-    <div class="report-card placeholder">
-      <div class="placeholder-inner">
-        <div class="placeholder-icon">+</div>
-        <p class="placeholder-text">Laporan berikutnya<br>akan muncul di sini</p>
+    <!-- CARD 3 — VANTAGE HUB -->
+    <a class="card" href="vantage-hub/vantage-hub-complete.html" data-cat="keamanan" style="--accent:#56d364">
+      <div class="card-tag tag-keamanan">🛡 Keamanan & Security</div>
+      <div class="card-title">The Vantage Hub — Security Knowledge Platform Prototype</div>
+      <div class="card-desc">Prototipe platform intelijen keamanan multi-halaman untuk profesional security di Indonesia dan Asia Pasifik — mencakup feed berita, standards library, consultancy, pricing, dan admin dashboard.</div>
+      <div class="card-tags-row">
+        <span class="pill">Security</span>
+        <span class="pill">Platform</span>
+        <span class="pill">Indonesia</span>
+        <span class="pill">UI Prototype</span>
       </div>
-    </div>
+      <div class="card-footer">
+        <span class="card-date">April 2026</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
 
   </div>
+</div>
 
-  <hr class="divider">
-
-  <!-- HOW TO ADD -->
-  <div class="how-to">
-    <p class="how-label">Cara menambah laporan baru</p>
-    <p class="how-title">Setiap kali Claude menghasilkan sesuatu yang ingin disimpan</p>
-    <div class="how-steps">
-      <div class="how-step">
-        <p class="how-step-num">01</p>
-        <p class="how-step-text">Minta Claude: <code>"buat sebagai file HTML standalone"</code> lalu download file-nya</p>
-      </div>
-      <div class="how-step">
-        <p class="how-step-num">02</p>
-        <p class="how-step-text">Di GitHub: <code>Add file → Create new file</code>, ketik <code>nama-laporan/index.html</code></p>
-      </div>
-      <div class="how-step">
-        <p class="how-step-num">03</p>
-        <p class="how-step-text">Paste isi file HTML ke kotak konten, lalu klik <code>Commit changes</code></p>
-      </div>
-      <div class="how-step">
-        <p class="how-step-num">04</p>
-        <p class="how-step-text">Tambahkan kartu laporan baru di <code>index.html</code> ini dengan link ke folder tersebut</p>
-      </div>
-    </div>
-  </div>
-
-</main>
-
-<footer class="page-footer">
-  <p class="footer-brand">Matajaga Research Archive</p>
-  <p>Arsip ini dibangun dan dikelola bersama Claude / Anthropic &nbsp;·&nbsp; PT HRM Multi Sinergy · Matajaga</p>
-  <p style="margin-top:4px;">Jakarta, Indonesia &nbsp;·&nbsp; matajaga.com</p>
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Claude Intelligence Library · Diarsipkan bersama Claude by Anthropic</p>
 </footer>
+
+<script>
+function filterTab(el, cat) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  const cards = document.querySelectorAll('#cards .card');
+  let visible = 0;
+  cards.forEach(c => {
+    const match = cat === 'semua' || c.dataset.cat === cat;
+    c.style.display = match ? 'flex' : 'none';
+    if (match) visible++;
+  });
+
+  document.getElementById('count-label').textContent =
+    visible + ' LAPORAN · APRIL 2026';
+}
+</script>
 
 </body>
 </html>
