@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pemetaan Ekosistem Platform Monetisasi Digital — Matajaga Research</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,300;400;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0a1628;
+    --gold: #c9a84c;
+    --gold-light: #f0d98a;
+    --gold-pale: #fdf6e3;
+    --text: #1a1a2e;
+    --text-muted: #5a5a7a;
+    --text-light: #9090aa;
+    --border: rgba(201,168,76,0.25);
+    --bg: #ffffff;
+    --bg-soft: #fafaf8;
+    --bg-card: #ffffff;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--bg-soft);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  .page-header {
+    background: var(--navy);
+    color: #fff;
+    padding: 3rem 2rem 2.5rem;
+    border-bottom: 3px solid var(--gold);
+  }
+  .header-inner { max-width: 860px; margin: 0 auto; }
+  .header-kicker {
+    font-family: 'Source Serif 4', serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+  .header-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 0.75rem;
+  }
+  .header-subtitle {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.65);
+    max-width: 640px;
+    margin-bottom: 1.5rem;
+  }
+  .header-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-family: 'Source Serif 4', serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.06em;
+  }
+  .main { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .section { margin-bottom: 3rem; }
+  .section-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    margin-bottom: 1.25rem;
+    font-weight: 400;
+  }
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: var(--navy);
+  }
+  p { margin-bottom: 1rem; color: var(--text); font-size: 15px; line-height: 1.8; }
+  .exec-box {
+    background: var(--navy);
+    color: rgba(255,255,255,0.85);
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius);
+    margin: 1.5rem 0;
+    border-left: 4px solid var(--gold);
+  }
+  .exec-box p { color: rgba(255,255,255,0.85); font-size: 14px; margin: 0; }
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 1.5rem 0;
+  }
+  .platform-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    transition: border-color 0.2s;
+  }
+  .platform-card:hover { border-color: var(--gold); }
+  .ptag {
+    font-family: 'Source Serif 4', serif;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .t-lj { background: #e8f4fd; color: #1a5276; }
+  .t-ij { background: #f0ecfd; color: #4a235a; }
+  .t-lp { background: #eafaf1; color: #1e8449; }
+  .t-ip { background: #fef9e7; color: #7d6608; }
+  .t-hb { background: #fdf2e9; color: #784212; }
+  .pname {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: var(--navy);
+  }
+  .pdesc { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 8px; }
+  .pbest { font-size: 11px; color: var(--text-light); border-top: 1px solid var(--border); padding-top: 8px; line-height: 1.5; }
+  .matrix-wrap { overflow-x: auto; margin: 1.5rem 0; border-radius: var(--radius); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-family: 'Source Serif 4', serif; font-size: 13px; min-width: 560px; }
+  th { background: var(--navy); color: rgba(255,255,255,0.7); font-weight: 400; padding: 10px 14px; text-align: left; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--gold-pale); }
+  .bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .bar-track { height: 6px; border-radius: 3px; background: #eee; flex: 1; min-width: 60px; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bh { background: #27ae60; }
+  .bm { background: #e67e22; }
+  .bl { background: #e74c3c; }
+  .snum { font-size: 12px; font-weight: 500; min-width: 18px; text-align: right; color: var(--text-muted); }
+  .finding { display: flex; gap: 14px; margin-bottom: 1.5rem; align-items: flex-start; }
+  .fnum { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--gold); min-width: 32px; line-height: 1; padding-top: 2px; }
+  .fbody .ftitle { font-family: 'Source Serif 4', serif; font-size: 14px; font-weight: 600; margin-bottom: 4px; color: var(--navy); }
+  .fbody .ftext { font-size: 13px; line-height: 1.7; color: var(--text-muted); margin: 0; }
+  .rec-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.3rem; margin-bottom: 12px; }
+  .rec-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .rbadge { font-family: 'Source Serif 4', serif; font-size: 10px; font-weight: 400; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+  .rb1 { background: #e8f4fd; color: #1a5276; }
+  .rb2 { background: #fef9e7; color: #7d6608; }
+  .rb3 { background: #f0ecfd; color: #4a235a; }
+  .rtitle { font-family: 'Source Serif 4', serif; font-size: 14px; font-weight: 600; color: var(--navy); }
+  .rdesc { font-size: 13px; line-height: 1.65; color: var(--text-muted); margin: 0; }
+  .chart-wrap { position: relative; width: 100%; height: 280px; margin: 1.5rem 0; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 10px; font-size: 12px; color: var(--text-muted); }
+  .leg { display: flex; align-items: center; gap: 5px; }
+  .legsq { width: 10px; height: 10px; border-radius: 2px; }
+  .ci-box {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border-top: 3px solid var(--gold);
+  }
+  .ci-label { font-family: 'Source Serif 4', serif; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; font-weight: 400; }
+  .ci-text { font-size: 14px; line-height: 1.8; color: rgba(255,255,255,0.8); margin: 0; }
+  .rns-box { background: var(--gold-pale); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-top: 1.5rem; }
+  .rns-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-weight: 400; margin-bottom: 8px; }
+  .rns-text { font-size: 14px; line-height: 1.75; color: var(--navy); margin: 0; }
+  .page-footer { background: var(--navy); color: rgba(255,255,255,0.35); font-family: 'Source Serif 4', serif; font-size: 11px; text-align: center; padding: 1.5rem; border-top: 1px solid rgba(201,168,76,0.2); }
+  @media (max-width: 600px) { .main { padding: 1.5rem 1rem 3rem; } .platform-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-inner">
+    <p class="header-kicker">Laporan Analisis &nbsp;·&nbsp; Ekonomi Digital &nbsp;·&nbsp; April 2026</p>
+    <h1 class="header-title">Pemetaan Ekosistem Platform Monetisasi Digital<br>bagi Freelancer & Kreator Indonesia</h1>
+    <p class="header-subtitle">Analisis komparatif delapan platform berdasarkan dimensi pasar (lokal/internasional), model monetisasi (jasa/produk), dan potensi pendapatan — dilengkapi penilaian kritis dan rekomendasi strategis.</p>
+    <div class="header-meta">
+      <span>Sumber: Thread @NarasiVisual (X/Twitter)</span>
+      <span>·</span>
+      <span>Analisis: Claude / Anthropic</span>
+      <span>·</span>
+      <span>Konteks: Pasar Indonesia & Global</span>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <section class="section">
+    <p class="section-label">01 — Ringkasan eksekutif</p>
+    <h2 class="section-title">Dari gig economy ke sovereign income</h2>
+    <p>Pertumbuhan ekonomi kreator dan gig economy di Indonesia mengalami akselerasi signifikan pasca-2020, didorong oleh penetrasi internet yang mencapai 79,5% dari total populasi (APJII, 2024) dan meningkatnya literasi digital di kalangan angkatan kerja produktif.</p>
+    <p>Thread @NarasiVisual mengidentifikasi delapan platform yang dapat dikategorikan ke dalam dua sumbu utama: orientasi pasar (lokal vs. internasional) dan model monetisasi (jasa vs. produk digital). Matriks dua-sumbu ini merupakan kerangka analitis yang valid secara akademis.</p>
+    <div class="exec-box">
+      <p>Temuan utama: tidak ada satu platform yang secara universal superior. Pilihan optimal ditentukan oleh tiga variabel personal — kompetensi bahasa, kapasitas portofolio, dan toleransi risiko penghasilan. Strategi terbaik adalah pendekatan bertahap: mulai lokal untuk membangun kepercayaan diri, kemudian eskalasi ke pasar internasional dengan positioning yang lebih kuat.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label">02 — Taksonomi platform</p>
+    <h2 class="section-title">Delapan platform, empat kuadran strategis</h2>
+    <div class="platform-grid">
+      <div class="platform-card"><span class="ptag t-lj">Lokal · Jasa</span><p class="pname">Fastwork</p><p class="pdesc">Platform freelance terbesar di Indonesia. Fokus UMKM lokal dengan kebutuhan cepat & terjangkau.</p><p class="pbest">Unggulan: desain grafis, konten sosmed, web dev, copywriting</p></div>
+      <div class="platform-card"><span class="ptag t-lj">Lokal · Jasa</span><p class="pname">Sribu</p><p class="pdesc">Dikenal kuat di kalangan kreatif Indonesia, dengan sentuhan lokal yang kuat.</p><p class="pbest">Unggulan: logo, branding, ilustrasi, writing konten</p></div>
+      <div class="platform-card"><span class="ptag t-lj">Lokal · Jasa</span><p class="pname">Projects.co.id</p><p class="pdesc">Lebih condong ke proyek teknis dari perusahaan Indonesia.</p><p class="pbest">Unggulan: IT, software, proyek korporat</p></div>
+      <div class="platform-card"><span class="ptag t-ij">Intl · Jasa</span><p class="pname">Fiverr</p><p class="pdesc">Sistem gig untuk proyek pendek. Buyer perorangan dan usaha kecil global.</p><p class="pbest">Unggulan: desain premium, video editing, AI prompting, animasi</p></div>
+      <div class="platform-card"><span class="ptag t-ij">Intl · Jasa</span><p class="pname">Upwork</p><p class="pdesc">Platform kontrak jangka panjang untuk usaha menengah & startup luar negeri serius.</p><p class="pbest">Unggulan: programming, digital marketing, consulting</p></div>
+      <div class="platform-card"><span class="ptag t-lp">Lokal · Produk</span><p class="pname">Lynk & Clicky</p><p class="pdesc">Instant mobile webpage untuk kreator lokal. Cocok untuk audience yang sudah ada.</p><p class="pbest">Unggulan: ebook, preset, template, kursus mini, webinar</p></div>
+      <div class="platform-card"><span class="ptag t-ip">Intl · Produk</span><p class="pname">Etsy</p><p class="pdesc">Marketplace raksasa untuk produk handmade, vintage, dan digital printable global.</p><p class="pbest">Unggulan: wall art, Canva template, SVG/PNG, Lightroom preset</p></div>
+      <div class="platform-card"><span class="ptag t-hb">Hybrid</span><p class="pname">Threads</p><p class="pdesc">400M+ MAU, organic reach tinggi. Jasa maupun produk, lokal maupun global.</p><p class="pbest">Unggulan: direct selling, audience building, personal brand</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label">03 — Analisis komparatif</p>
+    <h2 class="section-title">Matriks penilaian multi-dimensi</h2>
+    <div class="matrix-wrap">
+      <table>
+        <thead>
+          <tr><th>Platform</th><th>Kemudahan masuk</th><th>Potensi pendapatan</th><th>Barrier bahasa</th><th>Kompetisi</th><th>Pasif income</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Fastwork</strong></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:90%"></div></div><span class="snum">5</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:50%"></div></div><span class="snum">3</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:90%"></div></div><span class="snum">5</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:60%"></div></div><span class="snum">3</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bl" style="width:20%"></div></div><span class="snum">1</span></div></td></tr>
+          <tr><td><strong>Sribu</strong></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:80%"></div></div><span class="snum">4</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:60%"></div></div><span class="snum">3</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:90%"></div></div><span class="snum">5</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:60%"></div></div><span class="snum">3</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bl" style="width:20%"></div></div><span class="snum">1</span></div></td></tr>
+          <tr><td><strong>Fiverr</strong></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:70%"></div></div><span class="snum">4</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:80%"></div></div><span class="snum">4</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:60%"></div></div><span class="snum">3</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:80%"></div></div><span class="snum">4</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bl" style="width:20%"></div></div><span class="snum">1</span></div></td></tr>
+          <tr><td><strong>Upwork</strong></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:40%"></div></div><span class="snum">2</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:100%"></div></div><span class="snum">5</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:40%"></div></div><span class="snum">2</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:70%"></div></div><span class="snum">4</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bl" style="width:20%"></div></div><span class="snum">1</span></div></td></tr>
+          <tr><td><strong>Etsy</strong></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:60%"></div></div><span class="snum">3</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:80%"></div></div><span class="snum">4</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:60%"></div></div><span class="snum">3</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:80%"></div></div><span class="snum">4</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:100%"></div></div><span class="snum">5</span></div></td></tr>
+          <tr><td><strong>Lynk/Clicky</strong></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:100%"></div></div><span class="snum">5</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:50%"></div></div><span class="snum">3</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:90%"></div></div><span class="snum">5</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:40%"></div></div><span class="snum">2</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:80%"></div></div><span class="snum">4</span></div></td></tr>
+          <tr><td><strong>Threads</strong></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:90%"></div></div><span class="snum">5</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:60%"></div></div><span class="snum">3</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bh" style="width:90%"></div></div><span class="snum">5</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bl" style="width:30%"></div></div><span class="snum">2</span></div></td><td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill bm" style="width:50%"></div></div><span class="snum">3</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label">04 — Temuan kritis</p>
+    <h2 class="section-title">Apa yang tidak disampaikan thread ini?</h2>
+    <div class="finding"><span class="fnum">01</span><div class="fbody"><p class="ftitle">Fallacy of ease: platform bukan jaminan klien</p><p class="ftext">Thread ini implisit menyarankan bahwa mendaftar = menghasilkan. Riset terhadap gig platform menunjukkan bahwa rata-rata freelancer baru di Fiverr dan Upwork membutuhkan 3–6 bulan sebelum mendapat order pertama yang berbayar. Discovery bukan otomatis — SEO internal platform sama kompetitifnya dengan SEO Google.</p></div></div>
+    <div class="finding"><span class="fnum">02</span><div class="fbody"><p class="ftitle">Klaim Threads 400M+ MAU perlu diverifikasi konteks</p><p class="ftext">Angka 400 juta MAU sesuai data Meta Q4 2025. Namun engagement rate per niche di Threads sangat bervariasi — kategori bisnis/keuangan masih jauh di bawah konten lifestyle dan entertainment.</p></div></div>
+    <div class="finding"><span class="fnum">03</span><div class="fbody"><p class="ftitle">Produk digital bukan passive income sejati tanpa traffic</p><p class="ftext">Etsy, Lynk, dan Clicky relevan hanya jika ada distribusi aktif. Produk digital tanpa traffic source yang kuat menghasilkan nol penjualan. Konsep "buat sekali, jual berkali-kali" benar secara mekanis, namun mengabaikan biaya akuisisi perhatian yang merupakan variabel paling mahal di ekonomi digital 2025–2026.</p></div></div>
+    <div class="finding"><span class="fnum">04</span><div class="fbody"><p class="ftitle">Platform fee dan pajak tidak dibahas</p><p class="ftext">Fiverr memotong 20% dari setiap transaksi. Upwork mengenakan 10–20% service fee. Etsy mengenakan listing fee + transaction fee + payment processing. Jika tidak diperhitungkan, struktur harga bisa defisit secara aktual meski terlihat menguntungkan secara gross.</p></div></div>
+    <div class="finding"><span class="fnum">05</span><div class="fbody"><p class="ftitle">Tidak ada pembahasan currency risk dan pajak devisa</p><p class="ftext">Penghasilan USD dari Upwork/Fiverr/Etsy tunduk pada kurs tukar dan potensi kewajiban PPh 26. Ketidakpahaman soal ini bisa menjadi masalah serius saat skala sudah besar.</p></div></div>
+  </section>
+
+  <section class="section">
+    <p class="section-label">05 — Visualisasi</p>
+    <h2 class="section-title">Profil risiko vs. potensi pendapatan per platform</h2>
+    <div class="legend">
+      <span class="leg"><span class="legsq" style="background:#378ADD"></span>Lokal · Jasa</span>
+      <span class="leg"><span class="legsq" style="background:#7F77DD"></span>Intl · Jasa</span>
+      <span class="leg"><span class="legsq" style="background:#BA7517"></span>Intl · Produk</span>
+      <span class="leg"><span class="legsq" style="background:#639922"></span>Lokal · Produk</span>
+      <span class="leg"><span class="legsq" style="background:#E24B4A"></span>Hybrid</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="scatter" role="img" aria-label="Scatter chart comparing risk vs income potential for 8 platforms">Platform comparison: Upwork highest income potential with high risk, Etsy high income with medium risk, local platforms low risk with moderate income.</canvas>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label">06 — Rekomendasi strategis</p>
+    <h2 class="section-title">Roadmap berbasis tahap kematangan</h2>
+    <div class="rec-card"><div class="rec-header"><span class="rbadge rb1">Pemula — 0–6 bulan</span><span class="rtitle">Mulai dari ekosistem domestik</span></div><p class="rdesc">Daftar ke Fastwork atau Sribu. Buat 3–5 gig dengan spesialisasi sempit. Targetkan 10 order pertama sebagai bukti konsep portofolio, bukan sebagai sumber penghasilan utama. Harga di bawah pasar 20–30% untuk 5 order pertama — tujuannya review, bukan profit.</p></div>
+    <div class="rec-card"><div class="rec-header"><span class="rbadge rb2">Menengah — 6–18 bulan</span><span class="rtitle">Ekspansi ke Fiverr + mulai aset digital</span></div><p class="rdesc">Bawa portofolio lokal ke Fiverr dengan harga 20–30% lebih tinggi. Paralel: kembangkan satu produk digital pertama di Clicky/Lynk. Investasikan 30 menit/hari untuk membangun audiens Threads. Pisahkan waktu: 60% eksekusi order, 20% marketing, 20% produk digital.</p></div>
+    <div class="rec-card"><div class="rec-header"><span class="rbadge rb3">Mahir — 18+ bulan</span><span class="rtitle">Upwork + Etsy + owned audience</span></div><p class="rdesc">Masuk Upwork hanya setelah memiliki reputasi dan proposal yang tajam. Simultankan dengan toko Etsy untuk produk digital yang sudah terbukti laku. Pada fase ini, Threads berfungsi sebagai owned channel yang mengarahkan traffic ke semua platform — bukan sebagai platform jual langsung.</p></div>
+  </section>
+
+  <div class="ci-box">
+    <p class="ci-label">Critical insight</p>
+    <p class="ci-text">Thread ini sangat efektif sebagai orientasi awal, namun mengandung satu blind spot struktural: seluruh delapan platform yang dibahas adalah third-party marketplace — artinya algoritma, biaya, dan visibilitas Anda sepenuhnya dikontrol pihak lain. Strategi jangka panjang yang sesungguhnya adalah menggunakan semua platform ini sebagai jalur akuisisi klien awal, lalu secara sistematis memindahkan klien terbaik ke ekosistem milik sendiri. Platform adalah pintu masuk, bukan rumah.</p>
+  </div>
+
+  <div class="rns-box">
+    <p class="rns-label">Recommended next step</p>
+    <p class="rns-text">Pilih satu platform, satu niche, dan satu format jasa/produk. Lakukan sprint 30 hari dengan target terukur — misalnya: 5 gig aktif, 10 proposal terkirim, atau 1 produk digital diluncurkan. Evaluasi data hasilnya sebelum diversifikasi ke platform kedua.</p>
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  Laporan ini disusun berdasarkan data dari thread @NarasiVisual (X/Twitter, April 2026) &nbsp;·&nbsp; Analisis oleh Claude / Anthropic &nbsp;·&nbsp; Matajaga Research Archive
+</footer>
+
+<script>
+new Chart(document.getElementById('scatter'), {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label: 'Fastwork', data: [{x:1.5,y:2.8,r:10}], backgroundColor: 'rgba(55,138,221,0.7)', borderColor: '#185FA5', borderWidth: 1 },
+      { label: 'Sribu', data: [{x:1.8,y:2.9,r:8}], backgroundColor: 'rgba(55,138,221,0.45)', borderColor: '#185FA5', borderWidth: 1 },
+      { label: 'Projects.co.id', data: [{x:2.1,y:3.0,r:7}], backgroundColor: 'rgba(55,138,221,0.3)', borderColor: '#185FA5', borderWidth: 1 },
+      { label: 'Fiverr', data: [{x:3.2,y:4.0,r:14}], backgroundColor: 'rgba(127,119,221,0.65)', borderColor: '#534AB7', borderWidth: 1 },
+      { label: 'Upwork', data: [{x:4.2,y:5.0,r:16}], backgroundColor: 'rgba(127,119,221,0.85)', borderColor: '#534AB7', borderWidth: 1 },
+      { label: 'Etsy', data: [{x:3.0,y:4.2,r:18}], backgroundColor: 'rgba(186,117,23,0.7)', borderColor: '#854F0B', borderWidth: 1 },
+      { label: 'Lynk/Clicky', data: [{x:1.2,y:2.5,r:8}], backgroundColor: 'rgba(99,153,34,0.65)', borderColor: '#3B6D11', borderWidth: 1 },
+      { label: 'Threads', data: [{x:1.5,y:3.2,r:12}], backgroundColor: 'rgba(226,75,74,0.55)', borderColor: '#A32D2D', borderWidth: 1 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    layout: { padding: 16 },
+    scales: {
+      x: { min: 0.5, max: 5.5, title: { display: true, text: 'Tingkat risiko & barrier masuk  →', font: { size: 11 }, color: '#888' }, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.06)' } },
+      y: { min: 1.5, max: 6, title: { display: true, text: '← Potensi pendapatan', font: { size: 11 }, color: '#888' }, ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.06)' } }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': Risiko ' + ctx.parsed.x.toFixed(1) + ', Pendapatan ' + ctx.parsed.y.toFixed(1) } }
+    }
+  }
+});
+</script>
+</body>
+</html>
